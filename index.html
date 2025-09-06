@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Uast</title>
+    <!-- Inclui a biblioteca do Tailwind CSS para estilização -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+       @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+body {
+    font-family: 'Poppins', sans-serif;
+}
+        .tab-content {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-red-900 flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-3xl">
+
+        <!-- Navegação por abas -->
+        <nav class="flex justify-center space-x-2 mb-6 border-b border-gray-200">
+            <button id="home-tab" class="py-2 px-4 text-sm font-medium text-center text-sky-950 border-b-2 border-sky-950 rounded-t-lg focus:outline-none hover:text-sky-950">
+                Home
+            </button>
+            <button id="outra-aba" class="py-2 px-4 text-sm font-medium text-center text-gray-500 rounded-t-lg hover:text-gray-700 hover:border-b-2 hover:border-gray-300 focus:outline-none">
+                Infos
+            </button>
+        </nav>
+
+        <!-- Conteúdo das abas -->
+        <div id="home-content" class="tab-content active p-4">
+            <header class="text-center mb-6">
+                <div class="flex items-center justify-center space-x-4">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Bras%C3%A3o_UFRPE.png" alt="Logo da UFRPE" class="h-16 w-16">
+                    <h1 class="text-6xl font-bold text-gray-800">SCHEDULE</h1>
+                    <img src="https://yt3.googleusercontent.com/dxDpQ0OCzFrH3ZQ5X9_pb1sjarfN371irInF903-0yIPhVT1HVsYeR1Om5Z3JUZUnAUb1H_G4w=s900-c-k-c0x00ffffff-no-rj" alt="Logo da UAST" class="h-16 w-16">
+                </div>
+                <p class="text-gray-500 mt-2">Organize seus estudos. Simplifique sua rotina..</p>
+            </header>
+
+            <div class="flex flex-col md:flex-row gap-4 justify-center items-center">
+                <!-- Menu para seleção de curso -->
+                <div class="relative w-full md:w-auto">
+                    <select id="course-select"
+                        class="block w-full text-center appearance-none bg-sky-950 text-white font-semibold py-3 px-6 rounded-lg hover:bg-cyan-950 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-900 cursor-pointer">
+                        <option value="" disabled selected>Selecione seu Curso</option>
+                        <option value="Administração">Administração</option>
+                        <option value="Agronomia">Agronomia</option>
+                        <option value="Ciências Biológicas">Ciências Biológicas</option>
+                        <option value="Ciências Econômicas">Ciências Econômicas</option>
+                        <option value="Engenharia de Pesca">Engenharia de Pesca</option>
+                        <option value="Sistemas de Informação">Sistemas de Informação</option>
+                        <option value="Zootecnia">Zootecnia</option>
+                        <option value="Química">Química</option>
+                        <option value="Letras">Letras</option>
+                    </select>
+                </div>
+                <!-- Menu para seleção de período -->
+                <div class="relative w-full md:w-auto">
+                    <select id="period-select"
+                        class="block w-full text-center appearance-none bg-sky-950 text-white font-semibold py-3 px-6 rounded-lg hover:bg-cyan-950 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-900 cursor-pointer">
+                        <option value="" disabled selected>Selecione seu Período</option>
+                        <option value="1º Período">1º Período</option>
+                        <option value="2º Período">2º Período</option>
+                        <option value="3º Período">3º Período</option>
+                        <option value="4º Período">4º Período</option>
+                        <option value="5º Período">5º Período</option>
+                        <option value="6º Período">6º Período</option>
+                        <option value="7º Período">7º Período</option>
+                        <option value="8º Período">8º Período</option>
+                        <option value="9º Período">9º Período</option>
+                        <option value="10º Período">10º Período</option>
+                        <option value="11º Período">11º Período</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="outra-aba-content" class="tab-content hidden p-4">
+            <!-- O conteúdo será gerado dinamicamente por JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = {
+                'home-tab': document.getElementById('home-content'),
+                'outra-aba': document.getElementById('outra-aba-content')
+            };
+            const tabButtons = document.querySelectorAll('nav button');
+            const courseSelect = document.getElementById('course-select');
+            const periodSelect = document.getElementById('period-select');
+            
+            // Dados de exemplo para o curso de Sistemas de Informação no 1º Período
+            const courseData = {
+                'Sistemas de Informação': {
+                    '1º Período': {
+                        horarios: [
+                            { horario: '18:30-19:20', segunda: 'Introdução a Programação - sala 11', terca: 'Laboratório de Informática - sala 11', quarta: 'Teoria Geral da Administração - sala 15', quinta: 'Matemática Discreta - sala 15', sexta: 'Cálculo - sala 15' },
+                            { horario: '19:20-20:10', segunda: 'Introdução a Programação - sala 11', terca: 'Laboratório de Informática - sala 11', quarta: 'Teoria Geral da Administração - sala 15', quinta: 'Matemática Discreta - sala 15', sexta: 'Cálculo - sala 15' },
+                            { horario: '20:10-21:00', segunda: 'Introdução a Programação - sala 11', terca: 'Introdução a Programação - sala 11', quarta: 'Teoria Geral da Administração - sala 15', quinta: 'Matemática Discreta - sala 15', sexta: 'Cálculo - sala 15' },
+                            { horario: '21:00-21:50', segunda: 'Introdução a Programação - sala 11', terca: 'Introdução a Programação - sala 11', quarta: 'Teoria Geral da Administração - sala 15', quinta: 'Matemática Discreta - sala 15', sexta: 'Cálculo - sala 15' }
+                        ],
+                        estudos: [
+                            { materia: 'Cálculo', link: 'https://drive.google.com/drive/folders/1JFFxzYPsHMqBVuKeTQMQjKiXY68lowIn?usp=drive_link' },
+                            { materia: 'Introdução a Programação', link: 'https://drive.google.com/drive/folders/1Puj8vG-n4yKv60HDWSwc4TLU5_Iwpefe?usp=drive_link' },
+                            { materia: 'Matemática Discreta', link: 'https://drive.google.com/drive/folders/17hldAfdTBoXUxKgpC26ditQGLJlVbxcP?usp=drive_link' },
+                            { materia: 'Teoria Geral da Administração', link: 'https://drive.google.com/drive/folders/1t4-CkYCOMgjDPnJd1OPYpTMEf5BNSjYZ?usp=drive_link' }
+                        ],
+                        informativos: ['Bem-vindos, Calouros!']
+                    }
+                }
+            };
+
+            // Função para alternar entre as abas
+            function showTab(tabId) {
+                // Esconde todo o conteúdo e desativa os botões
+                Object.keys(tabs).forEach(id => {
+                    tabs[id].classList.add('hidden');
+                    document.getElementById(id).classList.remove('border-b-2', 'border-sky-950', 'text-sky-950');
+                    document.getElementById(id).classList.add('text-gray-500');
+                });
+                
+                // Mostra o conteúdo da aba selecionada e ativa o botão
+                tabs[tabId].classList.remove('hidden');
+                document.getElementById(tabId).classList.add('border-b-2', 'border-sky-950', 'text-sky-950');
+                document.getElementById(tabId).classList.remove('text-gray-500');
+            }
+
+            // Função para renderizar o conteúdo da outra aba
+            function renderContent(course, period) {
+                const contentDiv = document.getElementById('outra-aba-content');
+                
+                // Verifica se a seleção é Sistemas de Informação - 1º Período
+                if (course === 'Sistemas de Informação' && period === '1º Período') {
+                    const data = courseData[course][period];
+                    let html = `
+                        <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">${course} - ${period}</h2>
+                    `;
+                    
+                    // Tabela de horários
+                    html += `
+                        <h3 class="text-2xl font-semibold text-sky-950 mt-8 mb-4">Horários das Aulas</h3>
+                        <div class="overflow-x-auto rounded-lg shadow-md">
+                            <table class="min-w-full text-sm text-left text-gray-500">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">Horário</th>
+                                        <th scope="col" class="px-6 py-3">Segunda</th>
+                                        <th scope="col" class="px-6 py-3">Terça</th>
+                                        <th scope="col" class="px-6 py-3">Quarta</th>
+                                        <th scope="col" class="px-6 py-3">Quinta</th>
+                                        <th scope="col" class="px-6 py-3">Sexta</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+                    data.horarios.forEach(item => {
+                        html += `
+                            <tr class="bg-white border-b hover:bg-gray-50">
+                                <td class="px-6 py-4 font-medium text-gray-900">${item.horario}</td>
+                                <td class="px-6 py-4">${item.segunda}</td>
+                                <td class="px-6 py-4">${item.terca}</td>
+                                <td class="px-6 py-4">${item.quarta}</td>
+                                <td class="px-6 py-4">${item.quinta}</td>
+                                <td class="px-6 py-4">${item.sexta}</td>
+                            </tr>
+                        `;
+                    });
+                    html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+
+                    // Sessão de Estudos
+                    html += `
+                        <h3 class="text-2xl font-semibold text-sky-950 mt-8 mb-4">Estudos</h3>
+                        <div class="flex flex-wrap gap-4 justify-center">
+                    `;
+                    data.estudos.forEach(item => {
+                        html += `
+                            <a href="${item.link}" target="_blank" class="px-6 py-3 bg-sky-950 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors duration-300">
+                                ${item.materia}
+                            </a>
+                        `;
+                    });
+                    html += `
+                        </div>
+                    `;
+
+                    // Informativos
+                    html += `
+                        <h3 class="text-2xl font-semibold text-sky-950 mt-8 mb-4">Informativos</h3>
+                        <div class="rounded-lg shadow-md p-4 bg-white text-center">
+                            <p class="text-lg text-gray-700 font-semibold">${data.informativos[0]}</p>
+                        </div>
+                    `;
+                    
+                    contentDiv.innerHTML = html;
+                } else {
+                    // Mensagem de "Em Desenvolvimento" para outras seleções
+                    contentDiv.innerHTML = `
+                        <div class="p-6 text-center text-gray-500">
+                            <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.761 2.924-1.761 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.761.426 1.761 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.761-2.924 1.761-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.761-.426-1.761-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.143.088.29.177.443.268a.965.965 0 00-.02-.132V7.5a.5.5 0 011 0v.149c.288-.1.597-.179.917-.234a.97.97 0 00-.02-.131V6.5a.5.5 0 011 0v.284c.29-.05.59-.092.89-.126a.96.96 0 00.02-.132V5.5a.5.5 0 011 0v.149c.288-.1.597-.179.917-.234z" />
+                                <path d="M12 14v1m0 3v1m0-4a.5.5 0 011 0v1m-1-1a.5.5 0 01-1 0v1" />
+                            </svg>
+                            <h3 class="mt-2 text-xl font-semibold text-gray-900">Em Desenvolvimento</h3>
+                            <p class="mt-1 text-sm text-gray-500">Ainda estamos trabalhando para adicionar os horários deste curso e período.</p>
+                        </div>
+                    `;
+                }
+            }
+
+            // Adiciona o evento de clique para os botões das abas
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    showTab(button.id);
+                });
+            });
+
+            // Adiciona o evento de mudança aos selects de curso e período
+            courseSelect.addEventListener('change', () => {
+                const selectedCourse = courseSelect.value;
+                const selectedPeriod = periodSelect.value;
+                if (selectedCourse && selectedPeriod) {
+                    renderContent(selectedCourse, selectedPeriod);
+                    showTab('outra-aba');
+                }
+            });
+            periodSelect.addEventListener('change', () => {
+                const selectedCourse = courseSelect.value;
+                const selectedPeriod = periodSelect.value;
+                if (selectedCourse && selectedPeriod) {
+                    renderContent(selectedCourse, selectedPeriod);
+                    showTab('outra-aba');
+                }
+            });
+
+            // Inicia com a primeira aba visível
+            showTab('home-tab');
+        });
+    </script>
+</body>
+</html>
